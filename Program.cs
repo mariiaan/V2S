@@ -12,63 +12,6 @@ namespace V2S
     {
         private static float threshold;
 
-        private static void OldMain()
-        {
-            Console.Write("FPS (int32): ");
-            int framesPerSecond = Int32.Parse(Console.ReadLine());
-            float frameInterval = 1f / framesPerSecond;
-            Console.Write("Threshold (float): ");
-            threshold = float.Parse(Console.ReadLine().Replace(',', '.'), CultureInfo.InvariantCulture);
-            Console.Write("Frames folder path: ");
-            string path = Console.ReadLine();
-            Console.Write("File query wildcard (e.g. *.bmp): ");
-            string wildcard = Console.ReadLine();
-            Console.Write("Output filename: ");
-            string outputFilename = Console.ReadLine();
-
-            string[] frames = Directory.GetFiles(path, wildcard);
-
-            StreamWriter outputFileWriter = new StreamWriter(outputFilename);
-            int frameIndex = 0;
-            Stopwatch reportProgress = new Stopwatch();
-            reportProgress.Start();
-
-            foreach (string frame in frames)
-            {
-                TimeSpan currentFrameTime = TimeSpan.FromSeconds(frameIndex * frameInterval);
-                TimeSpan nextFrameTime = TimeSpan.FromSeconds((frameIndex + 1) * frameInterval);
-
-                if (reportProgress.Elapsed.TotalSeconds > 1f)
-                {
-                    Console.WriteLine($"Frame {frameIndex.ToString()}, Time: {currentFrameTime.Hours.ToString("00")}:" +
-                                                                            $"{currentFrameTime.Minutes.ToString("00")}:" +
-                                                                            $"{currentFrameTime.Seconds.ToString("00")}," +
-                                                                            $"{currentFrameTime.Milliseconds.ToString("000")}");
-                    reportProgress.Restart();
-                }
-
-
-                outputFileWriter.WriteLine(frameIndex.ToString());
-                outputFileWriter.WriteLine($"{currentFrameTime.Hours.ToString("00")}:" +
-                                            $"{currentFrameTime.Minutes.ToString("00")}:" +
-                                            $"{currentFrameTime.Seconds.ToString("00")}," +
-                                            $"{currentFrameTime.Milliseconds.ToString("000")} --> " +
-                                            $"{nextFrameTime.Hours.ToString("00")}:" +
-                                            $"{nextFrameTime.Minutes.ToString("00")}:" +
-                                            $"{nextFrameTime.Seconds.ToString("00")}," +
-                                            $"{nextFrameTime.Milliseconds.ToString("000")}");
-
-                using (Bitmap bmp = new Bitmap(frame))
-                {
-                    outputFileWriter.WriteLine(ImageToString(bmp));
-                }
-
-                frameIndex++;
-            }
-
-            outputFileWriter.Close();
-        }
-
         private static void NewMain()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -190,14 +133,7 @@ namespace V2S
                  "--------------------------------" +
                  "\n");
 
-            if (args.Length > 1)
-            {
-                OldMain();
-            }
-            else
-            {
-                NewMain();
-            }
+            NewMain();        
         }
 
         private static string ImageToString(Bitmap input)
