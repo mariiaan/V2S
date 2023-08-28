@@ -9,3 +9,6 @@ This program includes ffmpeg (used for video decoding) which is licensed under G
 
 # Compilation
 Create a new .NET framework app (for example with Visual Studio 2019 Community) and replace the "Program.cs" file with the "Program.cs" file on this branch.
+
+# Issues
+Poorly, fast written code. Do not take this as a reference to well-written code.
